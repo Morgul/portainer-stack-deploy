@@ -1,6 +1,6 @@
-name: "Deploy a stack to Portainer"
+name: "Deploy a stack to Portainer (fixed)"
 description: "Github Action to deploy a stack to a Portainer instance"
-author: "Viet Tien <nvti>"
+author: "Chris Case <morgul>"
 branding:
   icon: "cloud"
   color: "blue"
