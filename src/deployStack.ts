@@ -127,8 +127,10 @@ export async function deployStack({
   } catch (error) {
     core.info('⛔️ Something went wrong during deployment!')
     throw error
-  } finally {
-    core.info(`Logging out from Portainer instance...`)
-    await portainerApi.logout()
+
+  // Logging out appears to be broken in Portainer 2.24.0 (maybe earlier)
+  // } finally {
+  //   core.info(`Logging out from Portainer instance...`)
+  //   await portainerApi.logout()
   }
 }

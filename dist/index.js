@@ -6,36 +6,12 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PortainerApi = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
-const core = __importStar(__nccwpck_require__(2186));
 class PortainerApi {
     constructor(host) {
         this.axiosInstance = axios_1.default.create({
@@ -50,13 +26,13 @@ class PortainerApi {
         this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.jwt}`;
     }
     async logout() {
-        try {
-            await this.axiosInstance.post('/auth/logout', null, { timeout: 5000 });
-        }
-        catch (error) {
-            core.info(`Logout failed: ${error}`);
-        }
-        this.axiosInstance.defaults.headers.common['Authorization'] = '';
+        // This appears to be broken in Portainer 2.24.0 (maybe earlier)
+        // try {
+        //   await this.axiosInstance.post('/auth/logout', null, { timeout: 5000 })
+        // } catch (error) {
+        //   core.info(`Logout failed: ${error}`)
+        // }
+        // this.axiosInstance.defaults.headers.common['Authorization'] = ''
     }
     async getStacks() {
         const { data } = await this.axiosInstance.get('/stacks');
@@ -186,10 +162,10 @@ async function deployStack({ portainerHost, username, password, swarmId, endpoin
     catch (error) {
         core.info('⛔️ Something went wrong during deployment!');
         throw error;
-    }
-    finally {
-        core.info(`Logging out from Portainer instance...`);
-        await portainerApi.logout();
+        // Logging out appears to be broken in Portainer 2.24.0 (maybe earlier)
+        // } finally {
+        //   core.info(`Logging out from Portainer instance...`)
+        //   await portainerApi.logout()
     }
 }
 
